@@ -16,19 +16,17 @@ public class Wolf : Enemy
     public bool isAttacking = false;
     float timer;
 
+    public void Start()
+    {
+        enemyName = "Wolf";
+    }
+
     public override void Update()
     {
         base.Update();
-        if (GameManager.instance.player != null)
-        {
-            try
-            {
-                target = GameManager.instance.player.transform;
-            }
-            catch
-            { }
 
-        }
+        target = player.transform;
+
         distance = Vector3.Distance(target.position, transform.position);
 
         if (Vector3.Distance(destination, transform.position) <= aI.stoppingDistance)
@@ -107,7 +105,7 @@ public class Wolf : Enemy
 
     public void Attack()
     {
-        bool hasShield = false;
+        //bool hasShield = false;
         bool hasPlayer = false;
 
         PlayerController player = null;
@@ -118,36 +116,33 @@ public class Wolf : Enemy
         {
             if (hitColliders[i].GetComponent<PlayerController>())
             {
-                hasPlayer = true;
+                //hasPlayer = true;
                 player = hitColliders[i].GetComponent<PlayerController>();
             }
-            if (hitColliders[i].CompareTag("Shield"))
-            {
-                hasShield = true;
-            }
+            //if (hitColliders[i].CompareTag("Shield"))
+            //{
+            //    hasShield = true;
+            //}
             i++;
         }
 
-        if (!hasShield)
+        Debug.Log(player);
+
+        if (hasPlayer)
         {
-            if (hasPlayer)
-            {
-               //player.TakeDamage(damage);
-            }
+            player.TakeDamage(damage);
             counter++;
         }
-        else
-        {
-            counter++;
-        }
+
+
     }
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, viewDis);
         Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, viewDis);
+        Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(FindOutwardPoint(), .5f);
-        Gizmos.color = Color.white;
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position + transform.forward, 1);
     }
 

@@ -14,6 +14,11 @@ public class Deer : Enemy
     float turnTime;
     Vector3 destination;
 
+    private void Start()
+    {
+        enemyName = "Deer";
+    }
+
     public override void Update()
     {
         destination = transform.position + (transform.position - player.transform.position).normalized;

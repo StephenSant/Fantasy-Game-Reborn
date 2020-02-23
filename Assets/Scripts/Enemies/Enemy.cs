@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour 
 {
+    [HideInInspector]
     public string enemyName;
     [Header("Movement")]
     public float moveSpeed;
@@ -18,7 +19,7 @@ public abstract class Enemy : MonoBehaviour
     public int fireHitSpeed = 1;
     public float burnTime = 3;
     public bool isBurning;
-    public GameObject fire;
+    //public GameObject fire;
     float curBurnTime;
     float curFireHitTime;
 
@@ -42,7 +43,7 @@ public abstract class Enemy : MonoBehaviour
         health = maxHealth;
         material = GetComponent<MeshRenderer>().materials[0];
         aI = GetComponent<NavMeshAgent>();
-        fire = Instantiate(Resources.Load<GameObject>("Fire"), transform);
+        //fire = Instantiate(Resources.Load<GameObject>("Fire"), transform);
     }
 
     void Start()
@@ -63,6 +64,11 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void Update()
     {
+        if (player == null)
+        {
+            player = GameManager.instance.player;
+        }
+
         aI.speed = moveSpeed;
 
         if (isBurning) { Fire(); }
@@ -73,7 +79,7 @@ public abstract class Enemy : MonoBehaviour
         else { colTime -= Time.deltaTime; }
 
         //ACTIVATE FIRE!!!!
-        fire.SetActive(isBurning);
+        //fire.SetActive(isBurning);
 
     }
 
