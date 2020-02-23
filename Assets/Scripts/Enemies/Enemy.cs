@@ -3,9 +3,60 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour 
+public abstract class Enemy : MonoBehaviour
 {
-    [HideInInspector]
+    public float moveSpeed;
+    public int primaryAttackDam;
+    public int secondaryAttackDam;
+    public Transform target;
+    public CurAction curAction;
+    public int health;
+
+    private void Update()
+    {
+        switch (curAction)
+        {
+            case CurAction.Flee:
+                Flee();
+                break;
+            case CurAction.Wander:
+                Wander();
+                break;
+            case CurAction.Approach:
+                Approach(Vector3.zero);
+                break;
+            default:
+                Idle();
+                break;
+        }
+    }
+
+    void Flee()
+    {
+
+    }
+
+    void Wander()
+    {
+
+    }
+
+    void Approach(Vector3 gotoPoint)
+    {
+
+    }
+
+    void Idle()
+    {
+
+    }
+
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
+
+    /*[HideInInspector]
     public string enemyName;
     [Header("Movement")]
     public float moveSpeed;
@@ -84,7 +135,7 @@ public abstract class Enemy : MonoBehaviour
     }
 
     #region Effects
-    /*   
+      
     public void ApplyEffect(Spells effect)
     {
         switch (effect)
@@ -103,7 +154,7 @@ public abstract class Enemy : MonoBehaviour
                 break;
         }
     }
-    */
+    
     #endregion
 
     public void Fire()
@@ -161,5 +212,12 @@ public abstract class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-
+    */
+}
+public enum CurAction
+{
+    Flee,
+    Wander,
+    Approach,
+    Idle
 }

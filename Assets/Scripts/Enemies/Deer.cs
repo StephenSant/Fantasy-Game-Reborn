@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Deer : Enemy
 {
-    [Header("Deer Values")]
+   /* [Header("Deer Values")]
     public float viewDis = 8.5f;
     public float minTurnFrequency = .5f;
     public float maxTurnFrequency = 1;
@@ -64,5 +64,5 @@ public class Deer : Enemy
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, viewDis);
-    }
+    }*/
 }

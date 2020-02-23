@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Wolf : Enemy
 {
-    [Header("Wolf Values")]
+    /*[Header("Wolf Values")]
     public float viewDis = 8.5f;
     public int damage;
     Vector3 destination;
@@ -145,5 +145,5 @@ public class Wolf : Enemy
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position + transform.forward, 1);
     }
-
+    */
 }

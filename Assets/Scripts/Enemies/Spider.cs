@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spider : Enemy
 {
-    Transform target;
+    /*Transform target;
     public float viewDis = 8.5f;
     public int damage;
     float distance;
@@ -89,5 +89,5 @@ public class Spider : Enemy
         Gizmos.DrawWireSphere(transform.position, viewDis);
         Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(transform.position + transform.forward * 0.5f, .5f);
-    }
+    }*/
 }

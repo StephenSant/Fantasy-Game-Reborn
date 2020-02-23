@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bear : Enemy
 {
+    /*
     Transform target;
     public float viewDis = 8.5f;
     public int damage;
@@ -89,5 +90,5 @@ public class Bear : Enemy
         Gizmos.DrawWireSphere(transform.position, viewDis);
         Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(transform.position + transform.forward * 1.5f, 2f);
-    }
+    }*/
 }
