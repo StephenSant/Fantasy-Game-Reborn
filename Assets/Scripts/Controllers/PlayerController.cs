@@ -47,6 +47,10 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (Input.GetButton("Jump") && IsGrounded())
+        {
+            Jump();
+        }
         if (Input.GetKey(KeyCode.LeftShift) && IsGrounded())
         {
             Run();
@@ -54,11 +58,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             Walk();
-        }
-
-        if (Input.GetButton("Jump"))
-        {
-            Jump();
         }
     }
 
@@ -105,10 +104,7 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        if (IsGrounded())
-        {
-            body.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
-        }
+        body.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
     }
     bool IsGrounded()
     {
