@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spider : Enemy
+public class Spider : EnemyController
 {
     /*Transform target;
     public float viewDis = 8.5f;

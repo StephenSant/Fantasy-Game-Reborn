@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class NPC : Interactable
+public class ActorController : MonoBehaviour ,IInteractable
 {
     //public NPCInfo info;
 
@@ -21,7 +21,7 @@ public class NPC : Interactable
         //    textBox = info.greeting;
     
 
-    public override void Interact()
+    public void Interact()
     {
         //GameManager.instance.uIManager.OpenDialogue();
     }

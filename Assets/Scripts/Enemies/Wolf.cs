@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wolf : Enemy
+public class Wolf : EnemyController
 {
     /*[Header("Wolf Values")]
     public float viewDis = 8.5f;

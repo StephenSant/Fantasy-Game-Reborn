@@ -2,67 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Deer : Enemy
+public class Deer : EnemyController
 {
-   /* [Header("Deer Values")]
-    public float viewDis = 8.5f;
-    public float minTurnFrequency = .5f;
-    public float maxTurnFrequency = 1;
-    public int turnPos;
-    public float runningTime = 10;
-    public float curRunTime;
-    float turnTime;
-    Vector3 destination;
-
-    private void Start()
-    {
-        enemyName = "Deer";
-    }
-
     public override void Update()
     {
-        destination = transform.position + (transform.position - player.transform.position).normalized;
-        base.Update();
 
-        if (turnTime <= 0)
+        if (fleeTempTime >= fleeTime)
         {
-            Turn();
-            turnTime = Random.Range(minTurnFrequency, maxTurnFrequency);
+            fleeTempTime = 0;
+            target = null;
+            curAction = CurAction.Idle;
         }
-        turnTime -= Time.deltaTime;
 
-        if ((transform.position - player.transform.position).magnitude < viewDis)
-        {
-            curRunTime = runningTime;
-        }
         else
         {
-            curRunTime -= Time.deltaTime;
+            curAction = CurAction.Flee;
         }
 
-        if (curRunTime < 0)
-        {
-            curRunTime = 0;
-        }
-
-        if (curRunTime > 0)
-        {
-            RunAway();
-        }
+        base.Update();
     }
-    public void Turn()
-    {
-        turnPos = Random.Range(-1, 2);
-    }
-
-    public void RunAway()
-    {
-        aI.SetDestination(destination + transform.right * turnPos + transform.forward);
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, viewDis);
-    }*/
 }
