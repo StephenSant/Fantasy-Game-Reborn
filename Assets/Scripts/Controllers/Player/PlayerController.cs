@@ -76,7 +76,8 @@ public class PlayerController : MonoBehaviour
         camF = camF.normalized;
         camR = camR.normalized;
 
-        Vector3 newInput = (camF * input.y + camR * input.x) * Time.deltaTime * (walkSpeed * 100);
+        //something, something multiply by Time.deltaTime and walkspeed
+        Vector3 newInput = (camF * input.y + camR * input.x) * Time.deltaTime * (walkSpeed * 100);//the multiply by 100 is so its not so slow
 
         //Slap these numbers in to change its velocity
         body.velocity = new Vector3(newInput.x, body.velocity.y, newInput.z);
@@ -96,7 +97,8 @@ public class PlayerController : MonoBehaviour
         camF = camF.normalized;
         camR = camR.normalized;
 
-        Vector3 newInput = (camF * input.y + camR * input.x) * Time.deltaTime * (runSpeed * 100);
+        //something, something multiply by Time.deltaTime and runSpeed
+        Vector3 newInput = (camF * input.y + camR * input.x) * Time.deltaTime * (runSpeed * 100);//the multiply by 100 is so its not so slow
 
         //Slap these numbers in to change its velocity
         body.velocity = new Vector3(newInput.x, body.velocity.y, newInput.z);
@@ -106,9 +108,10 @@ public class PlayerController : MonoBehaviour
     {
         body.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
     }
+
     bool IsGrounded()
     {
-        bool grounded = Physics.Raycast(transform.position, Vector3.down * groundCheck, whatIsGround);
+        bool grounded = Physics.Raycast(transform.position, Vector3.down, groundCheck,whatIsGround);
         return grounded;
     }
 

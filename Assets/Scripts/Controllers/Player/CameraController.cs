@@ -10,14 +10,12 @@ public class CameraController : MonoBehaviour
     public Transform player;
     public float mouseSensitivity = 10;
     public float distFromPlayer = 2;
-    public Vector2 pitchMinMax = new Vector2 (-40,85);
+    public Vector2 pitchMinMax = new Vector2(-40, 85);
     float yaw;
     float pitch;
-
-    void Start()
-    {
-
-    }
+    bool runRay;
+    public LayerMask playerLayer;
+    public float rayRange;
 
     void LateUpdate()
     {
@@ -37,8 +35,22 @@ public class CameraController : MonoBehaviour
         Vector3 targetRotation = new Vector3(pitch, yaw);
         transform.eulerAngles = targetRotation;
 
-        //Pulled back from player
+        //Pull back from player
         transform.position = player.position - transform.forward * distFromPlayer;
+    }
+
+    private void FixedUpdate()
+    {
+        //dont run the interacting ray if not in game mode
+        runRay = cameraMode == CameraMode.gameplay;
+        if (runRay) { InteractRay(); }
+
+    }
+
+    public void InteractRay()
+    {
+        RaycastHit hit;
+        Physics.Raycast(transform.position, transform.forward, out hit, rayRange, ~playerLayer);
     }
 }
 public enum CameraMode
