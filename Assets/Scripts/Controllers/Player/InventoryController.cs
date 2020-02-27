@@ -9,6 +9,7 @@ public class InventoryController : MonoBehaviour
     public List<ItemBlueprint> items;
     public List<SlotInfo> slots;
     public ItemBlueprint itemForAdding;
+    public WeaponBlueprint weapon;
 
     private void Update()
     {

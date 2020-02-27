@@ -774,6 +774,7 @@ MonoBehaviour:
   money: 0
   items: []
   itemForAdding: {fileID: 11400000, guid: 59ded10276dec0e46a99b658d0cf5e12, type: 2}
+  weapon: {fileID: 11400000, guid: 7a1bbd7620e030e4cbcfa1a7f1c7a40a, type: 2}
 --- !u!4 &1001923129
 Transform:
   m_ObjectHideFlags: 0
@@ -803,6 +804,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 1001923131}
   playerCam: {fileID: 963194229}
+  inventory: {fileID: 1001923127}
   health: 0
   maxHealth: 100
   material: {fileID: 2100000, guid: a501cf2e5b7230d4095d8dcfd555910e, type: 2}
@@ -813,6 +815,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   groundCheck: 1
+  attackArea: 1
 --- !u!54 &1001923131
 Rigidbody:
   m_ObjectHideFlags: 0

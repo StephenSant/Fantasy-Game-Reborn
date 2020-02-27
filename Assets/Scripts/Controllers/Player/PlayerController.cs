@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     public Rigidbody body;
     public CameraController playerCam;
+    public InventoryController inventory;
 
     [Header("Health")]
     public int health;
@@ -22,9 +23,13 @@ public class PlayerController : MonoBehaviour
     public float groundCheck;
     private Vector2 input;
 
+    [Header("Combat")]
+    public float attackArea = 1;
+
     void Start()
     {
         health = maxHealth;
+        inventory = GetComponent<InventoryController>();
     }
 
     public void TakeDamage(int damage)
@@ -42,11 +47,12 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
     }
 
     void FixedUpdate()
     {
+        input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         if (Input.GetButton("Jump") && IsGrounded())
         {
             Jump();
@@ -58,9 +64,16 @@ public class PlayerController : MonoBehaviour
         else
         {
             Walk();
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Attack();
+            }
         }
+
     }
 
+    #region Movement
     void Walk()
     {
         //Player faces forwards away from the camera
@@ -111,19 +124,39 @@ public class PlayerController : MonoBehaviour
 
     bool IsGrounded()
     {
-        bool grounded = Physics.Raycast(transform.position, Vector3.down, groundCheck,whatIsGround);
+        bool grounded = Physics.Raycast(transform.position, Vector3.down, groundCheck, whatIsGround);
         return grounded;
     }
+    #endregion
+
+    #region Combat
+    void Attack()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position + playerCam.transform.forward, attackArea, gameObject.layer);
+        foreach (Collider collider in hitColliders)
+        {
+            if (collider.GetComponent<EnemyController>())
+            {
+                collider.GetComponent<EnemyController>().TakeDamage(inventory.weapon.damage);
+            }
+        }
+
+    }
+    #endregion
 
     void Die()
     {
         Destroy(gameObject);
     }
 
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
-        //GroundCheck
-        Gizmos.color = Color.red;
+        //Ground Check
+        Gizmos.color = Color.yellow;
         Gizmos.DrawRay(transform.position, Vector3.down * groundCheck);
+
+        //Attack Area
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + transform.forward, attackArea);
     }
 }

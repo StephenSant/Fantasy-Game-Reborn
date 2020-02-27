@@ -36,6 +36,8 @@ public abstract class EnemyController : MonoBehaviour
 
     void SetUp()
     {
+        health = maxHealth;
+
         //Makes view checker
         viewCollider = gameObject.AddComponent<SphereCollider>();
         viewCollider.isTrigger = true;
@@ -55,7 +57,7 @@ public abstract class EnemyController : MonoBehaviour
         }
         #endregion
         //#endif
-        
+
         switch (curAction)
         {
             case CurAction.Flee:
@@ -77,6 +79,11 @@ public abstract class EnemyController : MonoBehaviour
             default:
                 Idle();
                 break;
+        }
+
+        if (health <= 0)
+        {
+            Die();
         }
 
     }
@@ -127,8 +134,15 @@ public abstract class EnemyController : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        Debug.Log("Delt " + damage + " damage to " + gameObject.name + ".");
+    }
+
     public void Die()
     {
+        Debug.Log(gameObject.name + " was slain.");
         Destroy(gameObject);
     }
 
