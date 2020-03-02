@@ -70,7 +70,15 @@ public class PlayerController : MonoBehaviour
                 Attack();
             }
         }
-
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            try
+            {
+                playerCam.InteractRay().collider.GetComponent<IInteractable>().Interact(gameObject);
+            }
+            catch
+            { return; }
+        }
     }
 
     #region Movement

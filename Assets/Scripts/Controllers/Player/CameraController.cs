@@ -43,14 +43,19 @@ public class CameraController : MonoBehaviour
     {
         //dont run the interacting ray if not in game mode
         runRay = cameraMode == CameraMode.gameplay;
-        if (runRay) { InteractRay(); }
+
 
     }
 
-    public void InteractRay()
+    public RaycastHit InteractRay()
     {
-        RaycastHit hit;
-        Physics.Raycast(transform.position, transform.forward, out hit, rayRange, ~playerLayer);
+        if (runRay)
+        {
+            RaycastHit hit;
+            Physics.Raycast(transform.position, transform.forward, out hit, rayRange, ~playerLayer);
+            return hit;
+        }
+        return new RaycastHit();
     }
 }
 public enum CameraMode

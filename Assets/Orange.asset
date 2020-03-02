@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Orange
   value: 2
-  amount: 13
+  weight: 2
+  amount: 50
   itemType: 0

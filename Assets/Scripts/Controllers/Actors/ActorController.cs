@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class ActorController : MonoBehaviour ,IInteractable
+public class ActorController : MonoBehaviour //,IInteractable
 {
     //public NPCInfo info;
 
