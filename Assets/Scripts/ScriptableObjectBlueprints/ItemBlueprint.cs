@@ -7,4 +7,5 @@ public class ItemBlueprint : ScriptableObject
     public string itemName;
     public int value;
     public float weight;
+    public Sprite icon;
 }
