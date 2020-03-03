@@ -45,11 +45,26 @@ public class PlayerController : MonoBehaviour
         if (health <= 0) { Die(); }
     }
 
+bool showInv=false;
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            try
+            {
+                playerCam.InteractRay().collider.GetComponent<IInteractable>().Interact(gameObject);
+            }
+            catch
+            { return; }
+        }
 
+        
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            UIManager.instance.ShowInventory(!showInv);
+            showInv = !showInv;
+        }
     }
-
     void FixedUpdate()
     {
         input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
@@ -70,16 +85,10 @@ public class PlayerController : MonoBehaviour
                 Attack();
             }
         }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            try
-            {
-                playerCam.InteractRay().collider.GetComponent<IInteractable>().Interact(gameObject);
-            }
-            catch
-            { return; }
-        }
+
     }
+
+
 
     #region Movement
     void Walk()

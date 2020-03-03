@@ -8,7 +8,7 @@ public class InventoryController : MonoBehaviour
     public int money;
     public List<ItemBlueprint> items;
     [SerializeField]
-    SlotController[] slots;
+    public List<SlotController> slots;
     public WeaponBlueprint weapon;
     public float maxWeight;
     [SerializeField]
@@ -67,34 +67,30 @@ public class InventoryController : MonoBehaviour
             {
                 items.Add(itemToAdd);
             }
+            UpdateInventory();
         }
-
-        UpdateInventory();
     }
-    //WIP
+
     public void UpdateInventory()
     {
-        
-        // Crashes unity...
+        //DONT LOOK AT MY SHAME!
 
-        //stores the slots.
-        slots.GetLength(UIManager.instance.slotParent.transform.childCount);
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < UIManager.instance.slotParent.transform.childCount; i++)
         {
-            slots[i] = UIManager.instance.slotParent.transform.GetChild(i).GetComponent<SlotController>();
+            Destroy (UIManager.instance.slotParent.transform.GetChild(i).gameObject);
         }
-        slots = UIManager.instance.slotParent.GetComponentsInChildren<SlotController>();
-
-        // if there are more items then there are slots
-        for (int i = 0; items.Count > slots.Length; i++)
+        int a = 1;
+        foreach (ItemBlueprint item in items)
         {
-            Instantiate(UIManager.instance.slotPrefab, UIManager.instance.slotParent.transform);
+            GameObject slotTemp;
+            slotTemp = Instantiate(UIManager.instance.slotPrefab, UIManager.instance.slotParent.GetComponent<RectTransform>().position + Vector3.down * (a*55-27.5f), UIManager.instance.slotPrefab.transform.rotation, UIManager.instance.slotParent.transform);
+            slotTemp.GetComponent<SlotController>().item = item;
+            a++;
         }
 
-        //loop through the slots to make sure they're showing the right things
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < UIManager.instance.slotParent.transform.childCount; i++)
         {
-            slots[i].item = items[i];
+            UIManager.instance.slotParent.transform.GetChild(i).GetComponent<SlotController>().UpdateSlot();
         }
     }
 }

@@ -12,14 +12,26 @@ public class SlotController : MonoBehaviour
 
     public void UpdateSlot()
     {
-        namePlace.text = item.itemName;
-        iconPlace.sprite = item.icon;
-        weightPlace.text = "" + item.weight;
-        valuePlace.text = "" + item.value;
         if (item is StackableBlueprint)
         {
             StackableBlueprint itemTemp = item as StackableBlueprint;
-            amountPlace.text = ""+itemTemp.amount;
+            itemTemp.UpdateItem();
         }
+            namePlace.text = item.itemName;
+        iconPlace.sprite = item.icon;
+
+        if (item is StackableBlueprint)
+        {
+            StackableBlueprint itemTemp = item as StackableBlueprint;
+            amountPlace.text = "" + itemTemp.amount;
+            weightPlace.text = "" + itemTemp.weightStacked;
+            valuePlace.text = "" + itemTemp.valueStacked;
+        }
+        else
+        {
+            weightPlace.text = "" + item.weight;
+            valuePlace.text = "" + item.value;
+        }
+
     }
 }

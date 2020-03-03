@@ -9,5 +9,6 @@ public class ItemController : MonoBehaviour,IInteractable
     public void Interact(GameObject interactor)
     {
         interactor.GetComponent<InventoryController>().AddItem(item);
+        Destroy(gameObject);
     }
 }
