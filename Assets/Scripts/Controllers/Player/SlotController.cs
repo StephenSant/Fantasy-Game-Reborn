@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class SlotController : MonoBehaviour
 {
+    public int slotId = 0;
+
     public ItemSlot itemSlot;
     public Text namePlace;
     public Image iconPlace;
@@ -17,5 +19,10 @@ public class SlotController : MonoBehaviour
         amountPlace.text = "" + itemSlot.amount;
         weightPlace.text = "" + itemSlot.weight;
         valuePlace.text = "" + itemSlot.value;
+    }
+
+    public void SelectSlot()
+    {
+        UIManager.instance.selectedSlot = slotId;
     }
 }

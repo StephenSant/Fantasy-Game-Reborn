@@ -12,9 +12,16 @@ public class InventoryController : MonoBehaviour
     [SerializeField]
     float totalWeight;
 
+    int selectedSlotTemp;
     public void LateUpdate()
     {
+        
         totalWeight = CheckWeight();
+        if (UIManager.instance.selectedSlot != selectedSlotTemp)
+        {
+            selectedSlotTemp = UIManager.instance.selectedSlot;
+            UpdateSelectedItem();
+        }
     }
 
     public float CheckWeight()
@@ -90,8 +97,6 @@ public class InventoryController : MonoBehaviour
 
     public void UpdateInventory()
     {
-        //DONT LOOK AT MY SHAME!
-
         //get rid of the slots
         for (int i = 0; i < UIManager.instance.slotParent.transform.childCount; i++)
         {
@@ -99,7 +104,6 @@ public class InventoryController : MonoBehaviour
         }
 
         //replace the slots
-
         for (int i = 0; i < slots.Count; i++)
         {
             GameObject slotTemp;
@@ -107,6 +111,7 @@ public class InventoryController : MonoBehaviour
             slotTemp = Instantiate(UIManager.instance.slotPrefab, UIManager.instance.slotParent.GetComponent<RectTransform>().position + Vector3.down * (i * 55 + 27.5f), UIManager.instance.slotPrefab.transform.rotation, UIManager.instance.slotParent.transform);
             //set slot
             slotTemp.GetComponent<SlotController>().itemSlot = slots[i];
+            slotTemp.GetComponent<SlotController>().slotId = i+1;
 
         }
 
@@ -115,6 +120,15 @@ public class InventoryController : MonoBehaviour
         {
             UIManager.instance.slotParent.transform.GetChild(i).GetComponent<SlotController>().UpdateSlot();
         }
+    }
+
+    public void UpdateSelectedItem()
+    {
+        UIManager manager = UIManager.instance;
+        manager.selectedItemImage.sprite = slots[manager.selectedSlot-1].item.icon;
+        manager.selectedItemName.text = slots[manager.selectedSlot-1].item.name;
+        //manager.selectedItemInfo.text =  slots[manager.selectedSlot]
+        //health, damage, defence, range, ect...
     }
 }
 [System.Serializable]

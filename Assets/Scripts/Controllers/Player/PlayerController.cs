@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
         if (health <= 0) { Die(); }
     }
 
-bool showInv=false;
+    bool showInv=false;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -87,8 +87,6 @@ bool showInv=false;
         }
 
     }
-
-
 
     #region Movement
     void Walk()

@@ -17,6 +17,11 @@ public class UIManager : MonoBehaviour
     [Header("Inventory Variables")]
     public GameObject slotPrefab;
     public GameObject slotParent;
+    public int selectedSlot;
+
+    public Text selectedItemName;
+    public Image selectedItemImage;
+    public Text selectedItemInfo;
 
     private void Awake()
     {
