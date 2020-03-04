@@ -6,9 +6,7 @@ using UnityEngine;
 public class InventoryController : MonoBehaviour
 {
     public int money;
-    public List<ItemBlueprint> items;
-    [SerializeField]
-    public List<SlotController> slots;
+    public List<ItemSlot> slots;
     public WeaponBlueprint weapon;
     public float maxWeight;
     [SerializeField]
@@ -21,53 +19,72 @@ public class InventoryController : MonoBehaviour
 
     public float CheckWeight()
     {
-        float weightTemp = 0;
-        foreach (ItemBlueprint item in items)
+        if (slots.Count != 0)
         {
-            if (item is StackableBlueprint)
+            float weightTemp = 0;
+            for (int i = 0; i < slots.Count; i++)
             {
-                StackableBlueprint itemTemp = item as StackableBlueprint;
-                weightTemp = itemTemp.weight * itemTemp.amount;
+                if (slots[i].item is StackableBlueprint)
+                {
+                    StackableBlueprint itemTemp = slots[i].item as StackableBlueprint;
+                    slots[i].Weight = itemTemp.weight * slots[i].amount;
+                }
+                else
+                {
+                    weightTemp = slots[i].item.weight;
+                }
             }
-            else
+            if (weapon != null)
             {
-                weightTemp = item.weight;
+                weightTemp += weapon.weight;
             }
+
+            //Also put in the armour's weight!
+
+            return weightTemp;
         }
-        if (weapon != null)
+        else
         {
-            weightTemp += weapon.weight;
+            return 0;
         }
-
-        //Also put in the armour's weight!
-
-        return weightTemp;
     }
 
     public void AddItem(ItemBlueprint itemToAdd)
     {
+        //if its too heavy
         if (totalWeight + itemToAdd.weight > maxWeight)
         {
             Debug.Log("Too heavy.");
             return;
         }
+        //if its not too heavy
         else
         {
-            if (items.Contains(itemToAdd) /*|| !weapons ||!armour*/)
+            for (int i = 0; i < slots.Count; i++)
             {
-                foreach (StackableBlueprint stackable in items)
+
+                //if we have the item and is stackable 
+                if (slots[i].item == itemToAdd /*|| !weapons ||!armour*/)
                 {
-                    if (itemToAdd.itemName == stackable.itemName)
+                    //if the item is stackable
+                    if (itemToAdd is StackableBlueprint)
                     {
-                        stackable.amount++;
+                        //add to stack
+                        slots[i].amount++;
+                        UpdateInventory();
+                        return;
                     }
                 }
             }
-            else
-            {
-                items.Add(itemToAdd);
-            }
+            //make a new slot
+            ItemSlot newItem = new ItemSlot();
+            newItem.item = itemToAdd;
+            newItem.amount = 1;
+            newItem.value = itemToAdd.value;
+            newItem.weight = itemToAdd.weight;
+            slots.Add(newItem);
             UpdateInventory();
+            return;
         }
     }
 
@@ -75,22 +92,42 @@ public class InventoryController : MonoBehaviour
     {
         //DONT LOOK AT MY SHAME!
 
+        //get rid of the slots
         for (int i = 0; i < UIManager.instance.slotParent.transform.childCount; i++)
         {
-            Destroy (UIManager.instance.slotParent.transform.GetChild(i).gameObject);
-        }
-        int a = 1;
-        foreach (ItemBlueprint item in items)
-        {
-            GameObject slotTemp;
-            slotTemp = Instantiate(UIManager.instance.slotPrefab, UIManager.instance.slotParent.GetComponent<RectTransform>().position + Vector3.down * (a*55-27.5f), UIManager.instance.slotPrefab.transform.rotation, UIManager.instance.slotParent.transform);
-            slotTemp.GetComponent<SlotController>().item = item;
-            a++;
+            Destroy(UIManager.instance.slotParent.transform.GetChild(i).gameObject);
         }
 
+        //replace the slots
+
+        for (int i = 0; i < slots.Count; i++)
+        {
+            GameObject slotTemp;
+            //places slot
+            slotTemp = Instantiate(UIManager.instance.slotPrefab, UIManager.instance.slotParent.GetComponent<RectTransform>().position + Vector3.down * (i * 55 + 27.5f), UIManager.instance.slotPrefab.transform.rotation, UIManager.instance.slotParent.transform);
+            //set slot
+            slotTemp.GetComponent<SlotController>().itemSlot = slots[i];
+
+        }
+
+        ////Update slots to make sure they're right
         for (int i = 0; i < UIManager.instance.slotParent.transform.childCount; i++)
         {
             UIManager.instance.slotParent.transform.GetChild(i).GetComponent<SlotController>().UpdateSlot();
         }
+    }
+}
+[System.Serializable]
+public class ItemSlot
+{
+    public ItemBlueprint item;
+    public int amount;
+    public int value;
+    public float weight;
+
+    public float Weight
+    {
+        set { weight = value; }
+        get { return weight; }
     }
 }

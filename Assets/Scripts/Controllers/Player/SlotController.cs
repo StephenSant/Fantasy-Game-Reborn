@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class SlotController : MonoBehaviour
 {
-    public ItemBlueprint item;
+    public ItemSlot itemSlot;
     public Text namePlace;
     public Image iconPlace;
     public Text amountPlace;
@@ -12,26 +12,10 @@ public class SlotController : MonoBehaviour
 
     public void UpdateSlot()
     {
-        if (item is StackableBlueprint)
-        {
-            StackableBlueprint itemTemp = item as StackableBlueprint;
-            itemTemp.UpdateItem();
-        }
-            namePlace.text = item.itemName;
-        iconPlace.sprite = item.icon;
-
-        if (item is StackableBlueprint)
-        {
-            StackableBlueprint itemTemp = item as StackableBlueprint;
-            amountPlace.text = "" + itemTemp.amount;
-            weightPlace.text = "" + itemTemp.weightStacked;
-            valuePlace.text = "" + itemTemp.valueStacked;
-        }
-        else
-        {
-            weightPlace.text = "" + item.weight;
-            valuePlace.text = "" + item.value;
-        }
-
+        namePlace.text = itemSlot.item.itemName;
+        iconPlace.sprite = itemSlot.item.icon;
+        amountPlace.text = "" + itemSlot.amount;
+        weightPlace.text = "" + itemSlot.weight;
+        valuePlace.text = "" + itemSlot.value;
     }
 }

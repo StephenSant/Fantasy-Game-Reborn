@@ -13,10 +13,7 @@ MonoBehaviour:
   m_Name: Orange
   m_EditorClassIdentifier: 
   itemName: Orange
-  value: 5
-  weight: 2
-  icon: {fileID: 0}
-  amount: 1
+  value: 2
+  weight: 1
+  icon: {fileID: 21300000, guid: 06826072034da5a44ac824e7e8fec918, type: 3}
   itemType: 0
-  weightStacked: 2
-  valueStacked: 5

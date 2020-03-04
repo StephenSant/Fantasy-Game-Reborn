@@ -15,8 +15,5 @@ MonoBehaviour:
   itemName: Apple
   value: 2
   weight: 1
-  icon: {fileID: 0}
-  amount: 1
+  icon: {fileID: 21300000, guid: 2719e7d2129b1144f9639555406d911d, type: 3}
   itemType: 0
-  weightStacked: 0
-  valueStacked: 0
