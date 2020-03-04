@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WaterShader
+  m_Shader: {fileID: 4800000, guid: f862bd38ab5f9ec41bd55107fb69e7e6, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Float0: 10
+    - _Float1: -2.5
+    - _Float2: 10
+    - _Float3: -1.25
+    - _Float4: 0.21
+    - _IntersectIntensity: 1
+    - _IntersectIntensity1: 0.317
+    - _Opacity: 1
+    - _VertDirection: 0.5
+    - _WaveScale: 1.5
+    - __dirty: 0
+    m_Colors:
+    - _BaseColor: {r: 0, g: 0.4037895, b: 1, a: 1}
+    - _BaseColour: {r: 0, g: 0.40476203, b: 1, a: 1}
+    - _Color0: {r: 0.5801887, g: 0.9205763, b: 1, a: 0}
+    - _EdgeColour: {r: 0.5801887, g: 0.9205763, b: 1, a: 0}
+    - _SecondColour: {r: 1, g: 1, b: 1, a: 1}
+    - _TopColour: {r: 1, g: 1, b: 1, a: 1}
+    - _Vector0: {r: 0, g: 0, b: 0, a: 1.59}
+    - _Vector1: {r: 0, g: 0, b: 0, a: 0}
+    - _Vector2: {r: 2, g: 2, b: 0, a: 0}
+    - _WaveSpeed: {r: 0, g: 0.5, b: 0, a: 0}

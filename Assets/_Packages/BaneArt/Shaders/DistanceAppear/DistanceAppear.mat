@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DistanceAppear
+  m_Shader: {fileID: 4800000, guid: 6c199a878158f494490068649a7aada9, type: 3}
+  m_ShaderKeywords: _TOGGLESWITCH0_ON _TOGGLESWITCH1_ON _TRANSPARENTTEXTURESWAPTOGGLE_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _TextureA:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureB:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample0:
+        m_Texture: {fileID: 2800000, guid: c68296334e691ed45b62266cbc716628, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample1:
+        m_Texture: {fileID: 2800000, guid: 84508b93f15f2b64386ec07486afc7a3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AppearDisappearToggle: 0
+    - _ArrayLength: 3
+    - _ColourDiffuseToggle: 0
+    - _ColourDiffuseToggle1: 1
+    - _Cutoff: 1
+    - _EdgeLength: 13.6
+    - _Float0: 1.41
+    - _Float1: 12.48
+    - _Keyword0: 0
+    - _Radius: 1.68
+    - _Radius1: 1
+    - _Strength: 1
+    - _Strength1: 0.078
+    - _Strength2: 0.042
+    - _TessPhongStrength: 0.582
+    - _Tesselation: 50
+    - _Tesselation1: 1
+    - _ToggleSwitch0: 1
+    - _ToggleSwitch1: 1
+    - _TransparentTextureSwapToggle: 1
+    - _VertOffsetMultiplier: 0.17
+    - _VertOffsetStrength: 0.25
+    - _VertextOffsetRadius: 0.667647
+    - _VertextOffsetStrength: 0.624706
+    - __dirty: 0
+    m_Colors:
+    - _Color0: {r: 0.0053485543, g: 0.6509434, b: 0, a: 1}
+    - _Color1: {r: 0, g: 1, b: 0, a: 1}
+    - _Color2: {r: 0, g: 0, b: 0, a: 1}
+    - _Color3: {r: 1, g: 1, b: 1, a: 1}
+    - _ColourA: {r: 0.0053485543, g: 0.6509434, b: 0, a: 1}
+    - _ColourB: {r: 0.6509804, g: 0.014208079, b: 0, a: 1}
+    - _ObjectPosition: {r: 2.12, g: -0.344, b: 15.069, a: 0}
+    - _Vector0: {r: 0, g: 1, b: 0, a: 0}
+    - _Vector1: {r: 0, g: 0, b: 0, a: 0}

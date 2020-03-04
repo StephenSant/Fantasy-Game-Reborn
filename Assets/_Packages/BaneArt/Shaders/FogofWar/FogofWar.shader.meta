@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: b6c8626b13f66d2479541ba1eb74e82c
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _CentreNoise: {fileID: 2800000, guid: 16d574e53541bba44a84052fa38778df, type: 3}
+  - _RimNoise: {fileID: 2800000, guid: 16d574e53541bba44a84052fa38778df, type: 3}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
