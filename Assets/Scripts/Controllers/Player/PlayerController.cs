@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("References")]
-    public Rigidbody body;
+    public CharacterController charController;
+    //public Rigidbody body;
     public CameraController playerCam;
     public InventoryController inventory;
 
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask whatIsGround;
     public float groundCheck;
     private Vector2 input;
+    public float gravityForce;
 
     [Header("Combat")]
     public float attackArea = 1;
@@ -45,7 +47,7 @@ public class PlayerController : MonoBehaviour
         if (health <= 0) { Die(); }
     }
 
-    bool showInv=false;
+    bool showInv = false;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -58,7 +60,7 @@ public class PlayerController : MonoBehaviour
             { return; }
         }
 
-        
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             UIManager.instance.ShowInventory(!showInv);
@@ -86,6 +88,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        Gravity();
     }
 
     #region Movement
@@ -108,7 +111,8 @@ public class PlayerController : MonoBehaviour
         Vector3 newInput = (camF * input.y + camR * input.x) * Time.deltaTime * (walkSpeed * 100);//the multiply by 100 is so its not so slow
 
         //Slap these numbers in to change its velocity
-        body.velocity = new Vector3(newInput.x, body.velocity.y, newInput.z);
+        charController.SimpleMove(new Vector3(newInput.x, 0, newInput.z));
+
     }
     void Run()
     {
@@ -129,12 +133,12 @@ public class PlayerController : MonoBehaviour
         Vector3 newInput = (camF * input.y + camR * input.x) * Time.deltaTime * (runSpeed * 100);//the multiply by 100 is so its not so slow
 
         //Slap these numbers in to change its velocity
-        body.velocity = new Vector3(newInput.x, body.velocity.y, newInput.z);
+        charController.SimpleMove(new Vector3(newInput.x, 0, newInput.z));
     }
 
     void Jump()
     {
-        body.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+        //body.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
     }
 
     bool IsGrounded()
@@ -142,7 +146,12 @@ public class PlayerController : MonoBehaviour
         bool grounded = Physics.Raycast(transform.position, Vector3.down, groundCheck, whatIsGround);
         return grounded;
     }
-    #endregion
+    
+    void Gravity()
+    {
+        charController.SimpleMove(Vector3.down * gravityForce*Time.deltaTime);
+    }
+#endregion
 
     #region Combat
     void Attack()
