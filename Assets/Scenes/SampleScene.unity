@@ -3220,7 +3220,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1001923125}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 125, y: 6, z: 125}
+  m_LocalPosition: {x: 125, y: 23.31, z: 125}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1597610909}
@@ -3245,14 +3245,14 @@ MonoBehaviour:
   health: 0
   maxHealth: 100
   material: {fileID: 2100000, guid: a501cf2e5b7230d4095d8dcfd555910e, type: 2}
-  walkSpeed: 2.5
-  runSpeed: 3.5
-  jumpHeight: 5
+  gravity: -9.81
+  walkSpeed: 5
+  runSpeed: 15
+  jumpForce: 2.5
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
   groundCheck: 1
-  gravityForce: 0.5
   attackArea: 1
 --- !u!1 &1090914027
 GameObject:

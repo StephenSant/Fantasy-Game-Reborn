@@ -16,14 +16,17 @@ public class PlayerController : MonoBehaviour
     public Material material;
     float colTime = 1;
 
+    [Header("Physics")]
+    Vector3 velocity;
+    public float gravity = -9.81f;
+
     [Header("Movement")]
     public float walkSpeed;
     public float runSpeed;
-    public float jumpHeight;
+    public float jumpForce;
     public LayerMask whatIsGround;
     public float groundCheck;
     private Vector2 input;
-    public float gravityForce;
 
     [Header("Combat")]
     public float attackArea = 1;
@@ -50,30 +53,21 @@ public class PlayerController : MonoBehaviour
     bool showInv = false;
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        //Stops gravity pulling the player down
+        if (IsGrounded() && velocity.y < 0)
         {
-            try
-            {
-                playerCam.InteractRay().collider.GetComponent<IInteractable>().Interact(gameObject);
-            }
-            catch
-            { return; }
+            velocity.y = -2;
         }
 
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            UIManager.instance.ShowInventory(!showInv);
-            showInv = !showInv;
-        }
-    }
-    void FixedUpdate()
-    {
-        input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         if (Input.GetButton("Jump") && IsGrounded())
         {
             Jump();
         }
+
+        Gravity();
+
+        input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
         if (Input.GetKey(KeyCode.LeftShift) && IsGrounded())
         {
             Run();
@@ -88,7 +82,21 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        Gravity();
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            try
+            {
+                playerCam.InteractRay().collider.GetComponent<IInteractable>().Interact(gameObject);
+            }
+            catch
+            { return; }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            UIManager.instance.ShowInventory(!showInv);
+            showInv = !showInv;
+        }
     }
 
     #region Movement
@@ -111,7 +119,8 @@ public class PlayerController : MonoBehaviour
         Vector3 newInput = (camF * input.y + camR * input.x) * Time.deltaTime * (walkSpeed * 100);//the multiply by 100 is so its not so slow
 
         //Slap these numbers in to change its velocity
-        charController.SimpleMove(new Vector3(newInput.x, 0, newInput.z));
+        velocity.x = newInput.x;
+        velocity.z = newInput.z;
 
     }
     void Run()
@@ -133,25 +142,29 @@ public class PlayerController : MonoBehaviour
         Vector3 newInput = (camF * input.y + camR * input.x) * Time.deltaTime * (runSpeed * 100);//the multiply by 100 is so its not so slow
 
         //Slap these numbers in to change its velocity
-        charController.SimpleMove(new Vector3(newInput.x, 0, newInput.z));
+        velocity.x = newInput.x;
+        velocity.z = newInput.z;
     }
-
     void Jump()
     {
-        //body.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+        //v = sqrt(h * -2 * g)
+        velocity.y = Mathf.Sqrt(jumpForce * -2 * gravity);
     }
+    #endregion
 
+    #region Physics
     bool IsGrounded()
     {
         bool grounded = Physics.Raycast(transform.position, Vector3.down, groundCheck, whatIsGround);
         return grounded;
     }
-    
     void Gravity()
     {
-        charController.SimpleMove(Vector3.down * gravityForce*Time.deltaTime);
+        // Vy = 1/2g * t^2
+        velocity.y += gravity * Time.deltaTime;
+        charController.Move(velocity * Time.deltaTime);
     }
-#endregion
+    #endregion
 
     #region Combat
     void Attack()
