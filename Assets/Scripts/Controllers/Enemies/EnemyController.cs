@@ -101,6 +101,19 @@ public abstract class EnemyController : MonoBehaviour
         fleeTurnTime -= Time.deltaTime;
 
         agent.SetDestination(destination + transform.right * fleeTurnPos + transform.forward);
+
+        if (fleeTempTime >= fleeTime)
+        {
+            fleeTempTime = 0;
+            target = null;
+            curAction = CurAction.Idle;
+        }
+
+        else
+        {
+            curAction = CurAction.Flee;
+        }
+
     }
 
     void Wander()

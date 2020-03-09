@@ -4,21 +4,16 @@ using UnityEngine;
 
 public class Deer : EnemyController
 {
+    Transform tempTarget;
     public override void Update()
     {
 
-        if (fleeTempTime >= fleeTime)
-        {
-            fleeTempTime = 0;
-            target = null;
-            curAction = CurAction.Idle;
-        }
-
-        else
+        if (tempTarget != target)
         {
             curAction = CurAction.Flee;
         }
 
+        tempTarget = target;
         base.Update();
     }
 }

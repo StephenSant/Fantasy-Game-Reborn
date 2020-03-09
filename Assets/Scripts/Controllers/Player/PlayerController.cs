@@ -53,28 +53,17 @@ public class PlayerController : MonoBehaviour
     bool showInv = false;
     void Update()
     {
-        //Stops gravity pulling the player down
-        if (IsGrounded() && velocity.y < 0)
-        {
-            velocity.y = -2;
-        }
-
-        if (Input.GetButton("Jump") && IsGrounded())
-        {
-            Jump();
-        }
-
-        Gravity();
-
         input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
         if (Input.GetKey(KeyCode.LeftShift) && IsGrounded())
         {
-            Run();
+            //Run
+            Move(runSpeed);
         }
         else
         {
-            Walk();
+            //Walk
+            Move(walkSpeed);
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -97,33 +86,23 @@ public class PlayerController : MonoBehaviour
             UIManager.instance.ShowInventory(!showInv);
             showInv = !showInv;
         }
+
+        //Stops gravity pulling the player down
+        if (IsGrounded() && velocity.y < 0)
+        {
+            velocity.y = -2;
+        }
+
+        if (Input.GetButton("Jump") && IsGrounded())
+        {
+            Jump();
+        }
+
+        Gravity();
     }
 
     #region Movement
-    void Walk()
-    {
-        //Player faces forwards away from the camera
-        transform.eulerAngles = Vector3.up * playerCam.transform.rotation.eulerAngles.y;
-
-        //uhh...
-        Vector3 camF = playerCam.transform.forward;
-        Vector3 camR = playerCam.transform.right;
-
-        //umm...
-        camF.y = 0;
-        camR.y = 0;
-        camF = camF.normalized;
-        camR = camR.normalized;
-
-        //something, something multiply by Time.deltaTime and walkspeed
-        Vector3 newInput = (camF * input.y + camR * input.x) * Time.deltaTime * (walkSpeed * 100);//the multiply by 100 is so its not so slow
-
-        //Slap these numbers in to change its velocity
-        velocity.x = newInput.x;
-        velocity.z = newInput.z;
-
-    }
-    void Run()
+    void Move(float moveSpeed)
     {
         //Player faces forwards away from the camera
         transform.eulerAngles = Vector3.up * playerCam.transform.rotation.eulerAngles.y;
@@ -139,12 +118,13 @@ public class PlayerController : MonoBehaviour
         camR = camR.normalized;
 
         //something, something multiply by Time.deltaTime and runSpeed
-        Vector3 newInput = (camF * input.y + camR * input.x) * Time.deltaTime * (runSpeed * 100);//the multiply by 100 is so its not so slow
+        Vector3 newInput = (camF * input.y + camR * input.x) * Time.deltaTime * (moveSpeed * 100);//the multiply by 100 is so its not so slow
 
         //Slap these numbers in to change its velocity
         velocity.x = newInput.x;
         velocity.z = newInput.z;
     }
+
     void Jump()
     {
         //v = sqrt(h * -2 * g)
@@ -172,9 +152,12 @@ public class PlayerController : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position + playerCam.transform.forward, attackArea, gameObject.layer);
         foreach (Collider collider in hitColliders)
         {
-            if (collider.GetComponent<EnemyController>())
+            //if the collider is an enemy 
+            //and
+            //if the collider is the view collider
+            if (collider.GetComponent<EnemyController>() && collider != collider.GetComponent<EnemyController>().viewCollider)
             {
-                collider.GetComponent<EnemyController>().TakeDamage(inventory.weapon.damage);
+                collider.GetComponent<EnemyController>().TakeDamage(inventory.weapon.damage);//deal damage
             }
         }
 

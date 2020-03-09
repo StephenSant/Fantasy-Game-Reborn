@@ -4,6 +4,26 @@ using UnityEngine;
 
 public class Bear : EnemyController
 {
+    public override void Update()
+    {
+        
+        if (health <= 10)
+        {
+            curAction = CurAction.Flee;
+        }
+        if (target != null)
+        {
+            curAction = CurAction.Approach;
+        }
+        else
+        {
+            curAction = CurAction.Wander;
+        }
+
+
+        base.Update();
+    }
+
     /*
     Transform target;
     public float viewDis = 8.5f;
