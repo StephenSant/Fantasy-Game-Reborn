@@ -61,6 +61,7 @@ public abstract class EnemyController : MonoBehaviour
         switch (curAction)
         {
             case CurAction.Flee:
+               agent.speed = moveSpeed;
                 if (target != null)
                 {
                     Flee();
@@ -71,9 +72,12 @@ public abstract class EnemyController : MonoBehaviour
                 }
                 break;
             case CurAction.Wander:
-                Wander();
+                agent.speed = moveSpeed / 2;
+
+                StartCoroutine(Wander());
                 break;
             case CurAction.Approach:
+                agent.speed = moveSpeed;
                 Approach();
                 break;
             default:
@@ -106,24 +110,25 @@ public abstract class EnemyController : MonoBehaviour
         {
             fleeTempTime = 0;
             target = null;
-            curAction = CurAction.Idle;
-        }
-
-        else
-        {
-            curAction = CurAction.Flee;
+            agent.SetDestination(transform.position);
         }
 
     }
 
-    void Wander()
+    IEnumerator Wander()
     {
-
+        Debug.Log("Yeet");
+        float waitTime;
+        waitTime = Random.Range(0f,5f);
+        new WaitForSeconds(waitTime);
+        destination = transform.position + new Vector3(Random.Range(-5f,5f),0, Random.Range(-5f,5f));
+        agent.SetDestination(destination);
+        return null;
     }
 
     void Approach()
     {
-
+        
     }
 
     void Idle()
