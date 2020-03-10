@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
 {
     [Header("References")]
     public CharacterController charController;
-    //public Rigidbody body;
     public CameraController playerCam;
     public InventoryController inventory;
 
@@ -23,6 +22,7 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     public float walkSpeed;
     public float runSpeed;
+    float moveSpeed;
     public float jumpForce;
     public LayerMask whatIsGround;
     public float groundCheck;
@@ -58,12 +58,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && IsGrounded())
         {
             //Run
-            Move(runSpeed);
+            moveSpeed = runSpeed;
         }
         else
         {
             //Walk
-            Move(walkSpeed);
+            moveSpeed = walkSpeed;
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -99,6 +99,11 @@ public class PlayerController : MonoBehaviour
         }
 
         Gravity();
+    }
+
+    private void FixedUpdate()
+    {
+        Move(moveSpeed);
     }
 
     #region Movement

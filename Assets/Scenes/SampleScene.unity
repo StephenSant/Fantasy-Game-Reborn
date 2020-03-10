@@ -485,13 +485,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curAction: 3
   viewCollider: {fileID: 0}
-  moveSpeed: 10
+  walkSpeed: 2
+  runSpeed: 8
   agent: {fileID: 168651255}
   target: {fileID: 0}
   destination: {x: 0, y: 0, z: 0}
   fleeTurnFreq: {x: 0.5, y: 1}
   fleeTime: 4
-  fleeTempTime: 0
   maxHealth: 50
   health: 0
   viewDist: 10
@@ -1714,7 +1714,7 @@ GameObject:
   - component: {fileID: 558727110}
   - component: {fileID: 558727109}
   m_Layer: 0
-  m_Name: EnemyTest
+  m_Name: Bear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1830,13 +1830,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curAction: 0
   viewCollider: {fileID: 0}
-  moveSpeed: 7.5
+  walkSpeed: 2
+  runSpeed: 4
   agent: {fileID: 558727109}
   target: {fileID: 0}
   destination: {x: 0, y: 0, z: 0}
   fleeTurnFreq: {x: 0.5, y: 0.85}
   fleeTime: 0
-  fleeTempTime: 0
   maxHealth: 100
   health: 0
   viewDist: 10
@@ -3391,8 +3391,8 @@ MonoBehaviour:
   maxHealth: 100
   material: {fileID: 2100000, guid: a501cf2e5b7230d4095d8dcfd555910e, type: 2}
   gravity: -9.81
-  walkSpeed: 5
-  runSpeed: 15
+  walkSpeed: 1.75
+  runSpeed: 3.5
   jumpForce: 1.5
   whatIsGround:
     serializedVersion: 2

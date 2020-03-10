@@ -2,26 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bear : EnemyController
+public class DeerController : EnemyController
 {
     public override void Update()
     {
-        
-        if (health <= 10)
+
+        if (target != null)
         {
             curAction = CurAction.Flee;
         }
-        else if (target != null)
-        {
-            curAction = CurAction.Approach;
-        }
         else
         {
-            curAction = CurAction.Wander;
+            curAction = CurAction.Idle;
         }
-
         base.Update();
     }
-
-   
 }

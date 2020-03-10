@@ -5,21 +5,21 @@ using UnityEngine;
 
 public abstract class EnemyController : MonoBehaviour
 {
-    public CurAction curAction;
+    public CurAction curAction = CurAction.Idle;
     [Header("References")]
     public SphereCollider viewCollider;
     [Header("Movement")]
-    public float moveSpeed;
+    public float walkSpeed;
+    public float runSpeed;
     public NavMeshAgent agent;
     public Transform target; //usally the player 
     public Vector3 destination; //the point to move to
     [Header("Fleeing")]
     public Vector2 fleeTurnFreq = new Vector2(0.5f, 1); //how often does it turn
     public float fleeTime; //how long do they run for
-    [HideInInspector]
-    public float fleeTempTime; //how long have they been running for 
-    float fleeTurnPos; //where it's turns towards
-    float fleeTurnTime; //how long until it turns again
+    [Header("Wandering")]
+    [Header("Primary Attack")]
+    [Header("Secondary Attack")]
     [Header("Health")]
     public int maxHealth;
     public int health;
@@ -43,14 +43,19 @@ public abstract class EnemyController : MonoBehaviour
         viewCollider.isTrigger = true;
     }
 
+
+    private void FixedUpdate()
+    {
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
     public virtual void Update()
     {
         //#if UNITY_EDITOR  
         #region For Testing
-        if (agent.speed != moveSpeed)
-        {
-            agent.speed = moveSpeed;
-        }
         if (viewCollider.radius != viewDist)
         {
             viewCollider.radius = viewDist;
@@ -61,93 +66,78 @@ public abstract class EnemyController : MonoBehaviour
         switch (curAction)
         {
             case CurAction.Flee:
-               agent.speed = moveSpeed;
-                if (target != null)
-                {
-                    Flee();
-                }
-                else
-                {
-                    curAction = CurAction.Idle;
-                }
+                Flee();
                 break;
             case CurAction.Wander:
-                agent.speed = moveSpeed / 2;
-
-                StartCoroutine(Wander());
+                Wander();
                 break;
-            case CurAction.Approach:
-                agent.speed = moveSpeed;
-                Approach();
+            case CurAction.PrimaryAttack:
+                PrimaryAttack();
+                break;
+            case CurAction.SecondaryAttack:
+                SecondaryAttack();
                 break;
             default:
                 Idle();
                 break;
         }
-
-        if (health <= 0)
-        {
-            Die();
-        }
-
     }
 
-    void Flee()
+    public void Idle()
     {
-        fleeTempTime += Time.deltaTime;
-        destination = transform.position + (transform.position - target.position).normalized;
-
-        if (fleeTurnTime <= 0)
-        {
-            fleeTurnPos = Random.Range(-1, 2);
-            fleeTurnTime = Random.Range(fleeTurnFreq.x, fleeTurnFreq.y);
-        }
-        fleeTurnTime -= Time.deltaTime;
-
-        agent.SetDestination(destination + transform.right * fleeTurnPos + transform.forward);
-
-        if (fleeTempTime >= fleeTime)
-        {
-            fleeTempTime = 0;
-            target = null;
-            agent.SetDestination(transform.position);
-        }
-
+        //Just run the idle animation
     }
 
-    IEnumerator Wander()
+    public void Flee()
     {
-        Debug.Log("Yeet");
-        float waitTime;
-        waitTime = Random.Range(0f,5f);
-        new WaitForSeconds(waitTime);
-        destination = transform.position + new Vector3(Random.Range(-5f,5f),0, Random.Range(-5f,5f));
-        agent.SetDestination(destination);
-        return null;
+        agent.speed = runSpeed;
+        agent.SetDestination(transform.position + (transform.position - target.position).normalized * 5 + (transform.right * Random.Range(-6f, 6f)));
     }
 
-    void Approach()
+    public void Wander()
     {
-        
+        agent.speed = walkSpeed;
+        agent.SetDestination(transform.position + (transform.forward * Random.Range(-1f, 3f)) + (transform.right * Random.Range(-5f, 5f)));
     }
 
-    void Idle()
+    public virtual void PrimaryAttack()
     {
-        //Run idle animation
+        agent.speed = runSpeed;
+    }
+
+    public virtual void SecondaryAttack()
+    {
+        agent.speed = runSpeed;
     }
 
     private void OnTriggerStay(Collider other)
     {
-        CheckSight(other);
+        InSight(other);
     }
 
-    void CheckSight(Collider other)
+    private void OnTriggerExit(Collider other)
+    {
+        OutSight(other);
+    }
+
+    void InSight(Collider other)
     {
         for (int i = 0; i < targetNames.Length; i++)
         {
             if (other.name == targetNames[i] && target == null)
             {
                 target = other.transform;
+            }
+        }
+    }
+
+    void OutSight(Collider other)
+    {
+        for (int i = 0; i < targetNames.Length; i++)
+        {
+            if (other.name == target.name)
+            {
+                target = null;
             }
         }
     }
@@ -169,6 +159,7 @@ public enum CurAction
 {
     Flee,
     Wander,
-    Approach,
+    PrimaryAttack,
+    SecondaryAttack,
     Idle
 }

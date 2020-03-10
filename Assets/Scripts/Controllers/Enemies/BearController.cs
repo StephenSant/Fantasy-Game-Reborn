@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Deer : EnemyController
+public class BearController : EnemyController
 {
-    Transform tempTarget;
     public override void Update()
     {
-
-        if (tempTarget != target)
+        
+        if (health <= 10)
         {
             curAction = CurAction.Flee;
         }
+        else
+        {
+            curAction = CurAction.Wander;
+        }
 
-        tempTarget = target;
         base.Update();
     }
+
+   
 }
