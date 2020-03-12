@@ -13,7 +13,7 @@ public class BearController : EnemyController
         }
         else
         {
-            curAction = CurAction.Wander;
+            curAction = CurAction.Ponder;
         }
 
         base.Update();

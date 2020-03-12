@@ -108,7 +108,7 @@ public class InventoryController : MonoBehaviour
         {
             GameObject slotTemp;
             //places slot
-            slotTemp = Instantiate(UIManager.instance.slotPrefab, UIManager.instance.slotParent.GetComponent<RectTransform>().position + Vector3.down * (i * 55 + 27.5f), UIManager.instance.slotPrefab.transform.rotation, UIManager.instance.slotParent.transform);
+            slotTemp = Instantiate(UIManager.instance.slotPrefab, UIManager.instance.slotParent.GetComponent<RectTransform>().position + Vector3.down * (i* (Screen.height * .115f) + (Screen.height * .0575f)), UIManager.instance.slotPrefab.transform.rotation, UIManager.instance.slotParent.transform);
             //set slot
             slotTemp.GetComponent<SlotController>().itemSlot = slots[i];
             slotTemp.GetComponent<SlotController>().slotId = i+1;

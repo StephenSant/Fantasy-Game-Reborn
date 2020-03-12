@@ -18,6 +18,12 @@ public abstract class EnemyController : MonoBehaviour
     public Vector2 fleeTurnFreq = new Vector2(0.5f, 1); //how often does it turn
     public float fleeTime; //how long do they run for
     [Header("Wandering")]
+    [Tooltip("Also used in Ponder")]
+    public float wanderWaitTime;
+    [Header("Pondering")] [Tooltip("Patrols and wanders ")]
+    public Vector3 ponderPoint;
+    public float ponderRadius;
+    Vector3 ponderTarget;
     [Header("Primary Attack")]
     [Header("Secondary Attack")]
     [Header("Health")]
@@ -37,6 +43,8 @@ public abstract class EnemyController : MonoBehaviour
     void SetUp()
     {
         health = maxHealth;
+
+        ponderPoint = transform.position;
 
         //Makes view checker
         viewCollider = gameObject.AddComponent<SphereCollider>();
@@ -63,6 +71,8 @@ public abstract class EnemyController : MonoBehaviour
         #endregion
         //#endif
 
+
+
         switch (curAction)
         {
             case CurAction.Flee:
@@ -70,6 +80,9 @@ public abstract class EnemyController : MonoBehaviour
                 break;
             case CurAction.Wander:
                 Wander();
+                break;
+            case CurAction.Ponder:
+                Ponder();
                 break;
             case CurAction.PrimaryAttack:
                 PrimaryAttack();
@@ -98,6 +111,22 @@ public abstract class EnemyController : MonoBehaviour
     {
         agent.speed = walkSpeed;
         agent.SetDestination(transform.position + (transform.forward * Random.Range(-1f, 3f)) + (transform.right * Random.Range(-5f, 5f)));
+    }
+
+    float ponderT;
+    public void Ponder()
+    {
+        agent.speed = walkSpeed;
+        if (ponderT <= 0)
+        {
+            ponderT = wanderWaitTime;
+            ponderTarget = transform.position + new Vector3(Random.Range(-ponderRadius, ponderRadius), 0, Random.Range(-ponderRadius, ponderRadius));
+        }
+        if (agent.remainingDistance <= agent.stoppingDistance)
+        {
+            ponderT -= Time.deltaTime;
+        }
+        agent.SetDestination(ponderTarget);
     }
 
     public virtual void PrimaryAttack()
@@ -159,6 +188,7 @@ public enum CurAction
 {
     Flee,
     Wander,
+    Ponder,
     PrimaryAttack,
     SecondaryAttack,
     Idle
