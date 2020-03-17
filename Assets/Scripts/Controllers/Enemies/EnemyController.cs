@@ -7,11 +7,10 @@ public abstract class EnemyController : MonoBehaviour
 {
     public CurAction curAction = CurAction.Idle;
     [Header("References")]
-    public SphereCollider viewCollider;
+    public NavMeshAgent agent;
     [Header("Movement")]
     public float walkSpeed;
     public float runSpeed;
-    public NavMeshAgent agent;
     public Transform target; //usally the player 
     public Vector3 destination; //the point to move to
     [Header("Fleeing")]
@@ -31,9 +30,11 @@ public abstract class EnemyController : MonoBehaviour
     public int health;
     [Header("Combat")]
     public float viewDist;
-    public string[] targetNames;
+    public LayerMask targetMasks;
     public int primaryAttackDam;
     public int secondaryAttackDam;
+    public float viewTickSpeed = 0.25f;
+    public List<Transform> visibleTargets = new List<Transform>();
 
     private void Start()
     {
@@ -43,12 +44,8 @@ public abstract class EnemyController : MonoBehaviour
     void SetUp()
     {
         health = maxHealth;
-
         panderPoint = transform.position;
-
-        //Makes view checker
-        viewCollider = gameObject.AddComponent<SphereCollider>();
-        viewCollider.isTrigger = true;
+        StartCoroutine(FindTargetsWithDelay(viewTickSpeed));
     }
 
 
@@ -62,17 +59,6 @@ public abstract class EnemyController : MonoBehaviour
 
     public virtual void Update()
     {
-        //#if UNITY_EDITOR  
-        #region For Testing
-        if (viewCollider.radius != viewDist)
-        {
-            viewCollider.radius = viewDist;
-        }
-        #endregion
-        //#endif
-
-
-
         switch (curAction)
         {
             case CurAction.Flee:
@@ -163,38 +149,31 @@ public abstract class EnemyController : MonoBehaviour
         agent.speed = runSpeed;
     }
 
-    private void OnTriggerStay(Collider other)
+    IEnumerator FindTargetsWithDelay(float delay)
     {
-        InSight(other);
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        OutSight(other);
-    }
-
-    void InSight(Collider other)
-    {
-        for (int i = 0; i < targetNames.Length; i++)
+        while (true)
         {
-            if (other.name == targetNames[i] && target == null)
-            {
-                target = other.transform;
-            }
+            yield return new WaitForSeconds(delay);
+            FindTargets();
         }
     }
 
-    void OutSight(Collider other)
+    LayerMask obstacleMasks;
+    void FindTargets()
     {
-        for (int i = 0; i < targetNames.Length; i++)
+        visibleTargets.Clear();
+        Collider[] targetsInView = Physics.OverlapSphere(transform.position, viewDist, targetMasks);
+        for (int i = 0; i < targetsInView.Length; i++)
         {
-            if (other.name == target.name)
+            Transform targetTemp = targetsInView[i].transform;
+            Vector3 dirToTarget = (targetTemp.position - transform.position).normalized;
+
+            float distToTarget = Vector3.Distance(transform.position, targetTemp.position);
+            
+            obstacleMasks ^= (1 << targetMasks);
+            if (!Physics.Raycast(transform.position, dirToTarget, distToTarget, obstacleMasks))
             {
-                try
-                {
-                    target = null;
-                }
-                catch { return; }
+                visibleTargets.Add(targetTemp);
             }
         }
     }

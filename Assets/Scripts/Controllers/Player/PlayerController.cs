@@ -160,7 +160,7 @@ public class PlayerController : MonoBehaviour
             //if the collider is an enemy 
             //and
             //if the collider is the view collider
-            if (collider.GetComponent<EnemyController>() && collider != collider.GetComponent<EnemyController>().viewCollider)
+            if (collider.GetComponent<EnemyController>())
             {
                 collider.GetComponent<EnemyController>().TakeDamage(inventory.weapon.damage);//deal damage
             }
