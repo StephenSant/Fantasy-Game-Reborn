@@ -18,12 +18,12 @@ public abstract class EnemyController : MonoBehaviour
     public Vector2 fleeTurnFreq = new Vector2(0.5f, 1); //how often does it turn
     public float fleeTime; //how long do they run for
     [Header("Wandering")]
-    [Tooltip("Also used in Ponder")]
+    [Tooltip("Also used in pander")]
     public float wanderWaitTime;
-    [Header("Pondering")] [Tooltip("Patrols and wanders ")]
-    public Vector3 ponderPoint;
-    public float ponderRadius;
-    Vector3 ponderTarget;
+    [Header("Pandering")]
+    public Vector3 panderPoint;
+    public float panderRadius;
+    Vector3 panderTarget;
     [Header("Primary Attack")]
     [Header("Secondary Attack")]
     [Header("Health")]
@@ -44,7 +44,7 @@ public abstract class EnemyController : MonoBehaviour
     {
         health = maxHealth;
 
-        ponderPoint = transform.position;
+        panderPoint = transform.position;
 
         //Makes view checker
         viewCollider = gameObject.AddComponent<SphereCollider>();
@@ -81,8 +81,8 @@ public abstract class EnemyController : MonoBehaviour
             case CurAction.Wander:
                 Wander();
                 break;
-            case CurAction.Ponder:
-                Ponder();
+            case CurAction.Pander:
+                Pander();
                 break;
             case CurAction.PrimaryAttack:
                 PrimaryAttack();
@@ -104,29 +104,53 @@ public abstract class EnemyController : MonoBehaviour
     public void Flee()
     {
         agent.speed = runSpeed;
-        agent.SetDestination(transform.position + (transform.position - target.position).normalized * 5 + (transform.right * Random.Range(-6f, 6f)));
+        NavMeshPath path = new NavMeshPath();
+        if (agent.CalculatePath(transform.position + (transform.position - target.position).normalized * 5 + (transform.right * Random.Range(-6f, 6f)), path))
+        {
+            agent.SetPath(path);
+        }
+        else { return; }
     }
 
     public void Wander()
     {
         agent.speed = walkSpeed;
-        agent.SetDestination(transform.position + (transform.forward * Random.Range(-1f, 3f)) + (transform.right * Random.Range(-5f, 5f)));
+        NavMeshPath path = new NavMeshPath();
+        if (agent.hasPath)//if you dont have a path, make one
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance)// if your at the position, get a new position
+            {
+                if (agent.CalculatePath(transform.position + (transform.forward * Random.Range(-1f, 3f)) + (transform.right * Random.Range(-5f, 5f)), path))//if you cant go there, try again
+                {
+                    agent.SetPath(path);
+                }
+                else { return; }
+            }
+        }
+        else
+        {
+            agent.CalculatePath(transform.position + (transform.forward * Random.Range(-1f, 3f)) + (transform.right * Random.Range(-5f, 5f)), path);
+            agent.SetPath(path);
+        }
     }
 
-    float ponderT;
-    public void Ponder()
+    public void Pander()
     {
         agent.speed = walkSpeed;
-        if (ponderT <= 0)
-        {
-            ponderT = wanderWaitTime;
-            ponderTarget = transform.position + new Vector3(Random.Range(-ponderRadius, ponderRadius), 0, Random.Range(-ponderRadius, ponderRadius));
-        }
+        NavMeshPath path = new NavMeshPath();
         if (agent.remainingDistance <= agent.stoppingDistance)
         {
-            ponderT -= Time.deltaTime;
+            if (Timer(wanderWaitTime))
+            {
+                panderTarget = transform.position + new Vector3(Random.Range(-panderRadius, panderRadius), 0, Random.Range(-panderRadius, panderRadius));
+                if (agent.CalculatePath(panderTarget, path))
+                {
+                    agent.SetPath(path);
+                }
+                else { return; }
+            }
         }
-        agent.SetDestination(ponderTarget);
+
     }
 
     public virtual void PrimaryAttack()
@@ -166,7 +190,11 @@ public abstract class EnemyController : MonoBehaviour
         {
             if (other.name == target.name)
             {
-                target = null;
+                try
+                {
+                    target = null;
+                }
+                catch { return; }
             }
         }
     }
@@ -183,12 +211,37 @@ public abstract class EnemyController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    float t;
+    bool setUp= false;
+    public bool Timer(float waitTime)
+    {
+        if (setUp)
+        {
+            if (t <= 0)
+            {
+                setUp = false;
+                return true;
+            }
+            else
+            {
+                t -= Time.deltaTime;
+                return false;
+            }
+        }
+        else
+        {
+            t = waitTime;
+            setUp = true;
+            return false;
+        }
+    }
+
 }
 public enum CurAction
 {
     Flee,
     Wander,
-    Ponder,
+    Pander,
     PrimaryAttack,
     SecondaryAttack,
     Idle
