@@ -24,15 +24,20 @@ public abstract class EnemyController : MonoBehaviour
     public float panderRadius;
     Vector3 panderTarget;
     [Header("Primary Attack")]
+    public int primaryAttackDam;
+    public float primaryAttackRange;
+    public float primaryAttackCoolDown;
     [Header("Secondary Attack")]
+    public int secondaryAttackDam;
+    public float secondaryAttackRange;
     [Header("Health")]
     public int maxHealth;
     public int health;
     [Header("Combat")]
     public float viewDist;
     public LayerMask targetMasks;
-    public int primaryAttackDam;
-    public int secondaryAttackDam;
+    
+    
     public float viewTickSpeed = 0.25f;
     public List<Transform> visibleTargets = new List<Transform>();
 
@@ -139,15 +144,9 @@ public abstract class EnemyController : MonoBehaviour
 
     }
 
-    public virtual void PrimaryAttack()
-    {
-        agent.speed = runSpeed;
-    }
+    public abstract void PrimaryAttack();
 
-    public virtual void SecondaryAttack()
-    {
-        agent.speed = runSpeed;
-    }
+    public abstract void SecondaryAttack();
 
     IEnumerator FindTargetsWithDelay(float delay)
     {
@@ -176,6 +175,15 @@ public abstract class EnemyController : MonoBehaviour
                 visibleTargets.Add(targetTemp);
             }
         }
+        if (visibleTargets.Count > 0)
+        {
+            target = visibleTargets[0];
+        }
+        else
+        {
+            target = null;
+        }
+        
     }
 
     public void TakeDamage(int damage)

@@ -17,4 +17,9 @@ public class DeerController : EnemyController
         }
         base.Update();
     }
+    public override void PrimaryAttack()
+    {}
+
+    public override void SecondaryAttack()
+    {}
 }

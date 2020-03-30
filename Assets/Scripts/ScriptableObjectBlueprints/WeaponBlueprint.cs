@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WeaponItem", menuName = "Item/Weapom")]
+[CreateAssetMenu(fileName = "WeaponItem", menuName = "Item/Weapon")]
 public class WeaponBlueprint : ItemBlueprint
 {
     public int damage;

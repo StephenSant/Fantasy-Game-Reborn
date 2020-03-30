@@ -12,8 +12,6 @@ public class PlayerController : MonoBehaviour
     [Header("Health")]
     public int health;
     public int maxHealth = 100;
-    public Material material;
-    float colTime = 1;
 
     [Header("Physics")]
     Vector3 velocity;
@@ -26,7 +24,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public LayerMask whatIsGround;
     public float groundCheck;
-    private Vector2 input;
+    private Vector2 inputDir;
 
     [Header("Combat")]
     public float attackArea = 1;
@@ -40,20 +38,13 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
-
-        //Flashing red timer
-        material.color = Color.red;
-        colTime = .15f;
-        if (colTime <= 0) { colTime = 0; material.color = Color.blue; }
-        else { colTime -= Time.deltaTime; }
-
         if (health <= 0) { Die(); }
     }
 
     bool showInv = false;
     void Update()
     {
-        input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        inputDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
         if (Input.GetKey(KeyCode.LeftShift) && IsGrounded())
         {
@@ -68,6 +59,10 @@ public class PlayerController : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Attack();
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftControl) && inputDir != Vector2.zero)
+            {
+                //Dodge
             }
         }
 
@@ -123,7 +118,7 @@ public class PlayerController : MonoBehaviour
         camR = camR.normalized;
 
         //something, something multiply by Time.deltaTime and runSpeed
-        Vector3 newInput = (camF * input.y + camR * input.x) * Time.deltaTime * (moveSpeed * 100);//the multiply by 100 is so its not so slow
+        Vector3 newInput = (camF * inputDir.y + camR * inputDir.x) * Time.deltaTime * (moveSpeed * 100);//the multiply by 100 is so its not so slow
 
         //Slap these numbers in to change its velocity
         velocity.x = newInput.x;
